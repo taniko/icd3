@@ -1,0 +1,11 @@
+{
+    "db": {
+        "user":"USER",
+        "pass":"PASSWORD",
+        "dbname":"DATABASE_NAME"
+    },
+    "slack": {
+        "token": "TOKEN",
+        "channel": "CHANNEL_NAME"
+    }
+}

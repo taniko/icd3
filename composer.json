@@ -1,0 +1,11 @@
+{
+    "autoload" : {
+        "psr-4" : {
+            "Hrgruri\\Icd3\\":"lib"
+        }
+    },
+    "require" : {
+        "devristo/phpws" : "dev-master",
+        "coderstephen/slack-client": "^0.2.3"
+    }
+}
