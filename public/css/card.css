@@ -1,0 +1,19 @@
+.card{
+    background: #ffffff;
+    /*word-brerak: break-all;*/
+    word-wrap:break-word;
+    /*border-bottom: solid 1px gray;*/
+    margin-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.card .title{
+    color: gray;
+    font-size: 14px;
+}
+
+.card .artist{
+    color: gray;
+    font-size: 14px;
+}

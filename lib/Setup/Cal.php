@@ -52,7 +52,9 @@ class Cal
             ksort($points_list);
             // DBに入れる
             foreach ($points_list as $child => $points) {
-                $this->db->insertPoints($parent, $child, $points);
+                if ($point != 0) {
+                    $this->db->insertPoints($parent, $child, $points);
+                }
             }
             if ($parent % 1000 == 0) {
                 $this->slack->send("done: {$parent}");
