@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "25078624f3281bdd83a30832625a3345",
-    "content-hash": "e025b1e51841158a9365b4026afc63cf",
+    "hash": "c72f01c57b51ca156d9009e73fcfbaa0",
+    "content-hash": "0b6d92598394b2231d1362f8cc1990cb",
     "packages": [
         {
             "name": "coderstephen/slack-client",
@@ -390,16 +390,16 @@
         },
         {
             "name": "hrgruri/rarcs",
-            "version": "v0.2.1",
+            "version": "v0.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hrgruri/rarcs.git",
-                "reference": "0c0400687f81481c2576d454da997655d462e980"
+                "reference": "8655afbedbc6f0b4f86ef758f98529eb53cbc690"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hrgruri/rarcs/zipball/0c0400687f81481c2576d454da997655d462e980",
-                "reference": "0c0400687f81481c2576d454da997655d462e980",
+                "url": "https://api.github.com/repos/hrgruri/rarcs/zipball/8655afbedbc6f0b4f86ef758f98529eb53cbc690",
+                "reference": "8655afbedbc6f0b4f86ef758f98529eb53cbc690",
                 "shasum": ""
             },
             "require": {
@@ -423,7 +423,7 @@
                 }
             ],
             "description": "Scraping tool for Ritsumeikan Art Research Center",
-            "time": "2016-05-15 13:36:56"
+            "time": "2016-05-16 02:17:24"
         },
         {
             "name": "nikic/fast-route",

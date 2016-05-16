@@ -15,11 +15,11 @@ class Route
             return self::$twig->loadTemplate('index.twig')->render([]);
         });
 
-        $app->get('/nishikie', function ($request, $response, $args) {
+        $app->get('/nishikie[/]', function ($request, $response, $args) {
             return \Hrgruri\Icd3\Controller\Nishikie::show($args, self::$twig);
         });
 
-        $app->get('/{db}/detail/{id}', function ($request, $response, $args) {
+        $app->get('/{db}/detail/{id}[/]', function ($request, $response, $args) {
             return \Hrgruri\Icd3\Controller\Detail::show($args, self::$twig);
         });
     }
