@@ -5,13 +5,17 @@ use Hrgruri\Icd3\Model\Detail as DB;
 
 class Nishikie
 {
-    public static function show($args, $twig)
+    public static function showIndex($args, $twig, $param)
+    {
+        return 'index';
+    }
+
+    public static function showSearch($args, $twig, $param)
     {
         $html = ($twig->loadTemplate('nishikie.twig'))->render([
             'title'     => '浮世絵データベース',
-            'result'    => null
+            'assets'    => \Hrgruri\Icd3\Model\Nishikie::search($param)
         ]);
         return $html;
-
     }
 }

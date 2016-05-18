@@ -15,12 +15,25 @@ class Route
             return self::$twig->loadTemplate('index.twig')->render([]);
         });
 
-        $app->get('/nishikie[/]', function ($request, $response, $args) {
-            return \Hrgruri\Icd3\Controller\Nishikie::show($args, self::$twig);
-        });
-
         $app->get('/{db}/detail/{id}[/]', function ($request, $response, $args) {
             return \Hrgruri\Icd3\Controller\Detail::show($args, self::$twig);
+        });
+
+        /*  nishikieの設定 */
+        $app->get('/nishikie[/]', function ($request, $response, $args) {
+            return \Hrgruri\Icd3\Controller\Nishikie::showIndex(
+                $args,
+                self::$twig,
+                $request->getQueryParams()
+            );
+        });
+
+        $app->get('/nishikie/search[/]', function ($request, $response, $args) {
+            return \Hrgruri\Icd3\Controller\Nishikie::showSearch(
+                $args,
+                self::$twig,
+                $request->getQueryParams()
+            );
         });
     }
 }

@@ -1,9 +1,9 @@
 <?php
 namespace Hrgruri\Icd3\Model;
 
-class Detail extends \Hrgruri\Icd3\DB\DB
+class Recommend extends \Hrgruri\Icd3\DB\DB
 {
-    public function getRecommend($db, $id, $limit = 4)
+    public function getByDetail($db, $id, $limit = 4)
     {
         $limit = is_int($limit) && $limit > 0 ? $limit : 4;
         $res = [];
@@ -30,5 +30,10 @@ class Detail extends \Hrgruri\Icd3\DB\DB
             }
         }
         return $res;
+    }
+
+    public function getUserRecommend($db, $id, $token, $limit = 4)
+    {
+        return [];
     }
 }

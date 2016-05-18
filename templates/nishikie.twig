@@ -1,1 +1,45 @@
 {% extends 'base.twig' %}
+
+{% block main_block %}
+    {% for item in assets %}
+        {% if loop.index % 4 == 1 %}
+            <div class="row">
+                <div class="card col-xs-12 col-md-3">
+                    <a href="{{item.url}}"><img src="{{item.cover}}" class="img-thumbnail"></a><br>
+                    <div class="title">タイトル :<br>{{item.title}}<br></div>
+                </div>
+        {% elseif (loop.index % 4 == 0 or loop.last) %}
+                <div class="card col-xs-12 col-md-3">
+                    <a href="{{item.url}}"><img src="{{item.cover}}" class="img-thumbnail"></a><br>
+                    <div class="title">タイトル :<br>{{item.title}}<br></div>
+                </div>
+            </div>
+        {% else %}
+            <div class="card col-xs-12 col-md-3">
+                <a href="{{item.url}}"><img src="{{item.cover}}" class="img-thumbnail"></a><br>
+                <div class="title">タイトル :<br>{{item.title}}<br></div>
+            </div>
+        {% endif %}
+    {% endfor %}
+{% endblock %}
+
+
+{% block sub_block %}
+    <form action='/nishikie/search' method="get">
+        <table>
+            <tr>
+                <td width="100" align="right" bgcolor="#c993ff">キーワード:</td>
+                <td width="250"><input type="text" name="keyword" size="20"></td>
+                <td width="100" align="right" bgcolor="#c993ff">資料名:</td>
+                <td width="250"><input type="text" name="title" size="20"></td>
+            </tr>
+            <tr>
+                <td width="100" align="right" bgcolor="#c993ff">絵師:</td>
+                <td width="250"><input type="text" name="author" size="20"></td>
+                <td width="100" align="right" bgcolor="#c993ff">件数:</td>
+                <td width="250"><input type="number" value="4" name="count" size="20"></td>
+            </tr>
+        </table>
+        <input class="submit_btn" type="submit" value="検索">
+    </form>
+{% endblock %}

@@ -1,7 +1,8 @@
 <?php
 namespace Hrgruri\Icd3\Controller;
 
-use Hrgruri\Icd3\Model\Detail as DB;
+use Hrgruri\Icd3\Model\Nishikie;
+use Hrgruri\Icd3\Model\Recommend;
 
 class Detail
 {
@@ -9,8 +10,8 @@ class Detail
     {
         $html = 'error';
         if ($args['db'] == 'nishikie') {
-            $info = (new \Hrgruri\Rarcs\NishikieClient())->getDetail($args['id']);
-            $recommend = (new DB)->getRecommend($args['db'], $args['id'],4);
+            $info = Nishikie::getDetail($args['id']);
+            $recommend = (new Recommend())->getByDetail($args['db'], $args['id'], 4);
             $html = ($twig->loadTemplate('detail.twig'))->render([
                 'title'     => '浮世絵データベース',
                 'info'      => $info,
