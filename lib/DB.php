@@ -1,5 +1,5 @@
 <?php
-namespace Hrgruri\Icd3\DB;
+namespace Hrgruri\Icd3;
 
 abstract class DB
 {

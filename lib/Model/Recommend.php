@@ -1,11 +1,12 @@
 <?php
 namespace Hrgruri\Icd3\Model;
 
-class Recommend extends \Hrgruri\Icd3\DB\DB
+class Recommend extends \Hrgruri\Icd3\DB
 {
-    public function getByDetail($db, $id, $limit = 4)
+    static $LIMIT = 4;
+    public function getByDetail($db, $id, $limit = 0)
     {
-        $limit = is_int($limit) && $limit > 0 ? $limit : 4;
+        $limit = is_int($limit) && $limit > 0 ? $limit : self::LIMIT;
         $res = [];
         $sth = $this->dbh->prepare('SELECT asset.id, asset.name FROM recommend, asset
             WHERE recommend.parent =
@@ -32,8 +33,9 @@ class Recommend extends \Hrgruri\Icd3\DB\DB
         return $res;
     }
 
-    public function getUserRecommend($db, $id, $token, $limit = 4)
+    public function getUserRecommend($db, $id, int $limit = null)
     {
+        $limit = is_int($limit) && $limit > 0 ? $limit : self::LIMIT;
         return [];
     }
 }

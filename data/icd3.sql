@@ -35,8 +35,7 @@ UNIQUE(parent, child)
 
 CREATE TABLE user(
 id int auto_increment PRIMARY KEY,
-ip varchar(16),
-user_agent varchar(255)
+token varchar(256)
 );
 
 CREATE TABLE log(
