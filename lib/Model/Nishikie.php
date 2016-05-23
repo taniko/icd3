@@ -3,7 +3,7 @@ namespace Hrgruri\Icd3\Model;
 
 use Hrgruri\Rarcs\NishikieClient as Client;
 
-class Nishikie
+class Nishikie extends \Hrgruri\Icd3\DB
 {
     const COUNT = 4;
     const COUNT_LIMIT = 24;
@@ -25,5 +25,29 @@ class Nishikie
     public static function getDetail($id)
     {
         return (new Client())->getDetail($id);
+    }
+
+    public function insertAssets(array $assets)
+    {
+        $db = 'nishikie';
+        $sth = $this->dbh->prepare('SELECT id FROM db WHERE name = :db');
+        $sth->bindParam(':db', $db, \PDO::PARAM_INT);
+        $sth->execute();
+        $db = ($sth->fetch())['id'];
+        $sth_in = $this->dbh->prepare('SELECT * FROM asset
+            WHERE name = :name
+            AND db = :db'
+        );
+        $sth_insert = $this->dbh->prepare('INSERT INTO asset(db, name) VALUES (:db, :name)');
+        foreach ($assets as $asset) {
+            $sth_in->bindParam(':name', $asset->id, \PDO::PARAM_STR);
+            $sth_in->bindParam(':db', $db, \PDO::PARAM_INT);
+            $sth_in->execute();
+            if ($sth_in->rowCount() != 1) {
+                $sth_insert->bindParam(':name', $asset->id, \PDO::PARAM_STR);
+                $sth_insert->bindParam(':db', $db, \PDO::PARAM_INT);
+                $sth_insert->execute();
+            }
+        }
     }
 }

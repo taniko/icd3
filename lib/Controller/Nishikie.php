@@ -12,10 +12,12 @@ class Nishikie
 
     public static function showSearch($args, $twig, $param)
     {
+        $assets = \Hrgruri\Icd3\Model\Nishikie::search($param);
+        (new \Hrgruri\Icd3\Model\Nishikie())->insertAssets($assets);
         self::setSession();
         $html = ($twig->loadTemplate('nishikie.twig'))->render([
             'title'     => '浮世絵データベース',
-            'assets'    => \Hrgruri\Icd3\Model\Nishikie::search($param)
+            'assets'    => $assets
         ]);
         return $html;
     }
