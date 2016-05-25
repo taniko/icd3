@@ -1,9 +1,9 @@
 <?php
-namespace Hrgruri\Icd3\DB;
+namespace Hrgruri\Icd3;
 
 use Hrgruri\Icd3\Dbh;
 
-class SetupDB extends DB
+class SetupDB
 {
     /**
      * ログデータをDBに入れる
