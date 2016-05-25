@@ -35,5 +35,13 @@ class Route
                 $request->getQueryParams()
             );
         });
+
+        /*  Log */
+        $app->post('/{db}/log/commit[/]', function ($request, $response, $args) {
+            \Hrgruri\Icd3\Model\log::commit(
+                $args['db'],
+                $request->getParams()['arc_no']
+            );
+        });
     }
 }

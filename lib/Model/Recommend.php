@@ -1,14 +1,19 @@
 <?php
 namespace Hrgruri\Icd3\Model;
 
-class Recommend extends \Hrgruri\Icd3\DB
+use Hrgruri\Rarcs\NishikieClient as Client;
+use Hrgruri\Icd3\Dbh;
+
+class Recommend
 {
-    static $LIMIT = 4;
-    public function getByDetail($db, $id, $limit = 0)
+    const LIMIT = 4;
+
+    public static function getByDetail($db, $id, $limit = 0)
     {
         $limit = is_int($limit) && $limit > 0 ? $limit : self::LIMIT;
         $res = [];
-        $sth = $this->dbh->prepare('SELECT asset.id, asset.name FROM recommend, asset
+        $dbh = Dbh::get();
+        $sth = $dbh->prepare('SELECT asset.id, asset.name FROM recommend, asset
             WHERE recommend.parent =
                 (SELECT id FROM asset
                     WHERE name = :id
@@ -33,9 +38,11 @@ class Recommend extends \Hrgruri\Icd3\DB
         return $res;
     }
 
-    public function getUserRecommend($db, $id, int $limit = null)
+    public static function getByUser($db, $id, int $limit = null)
     {
         $limit = is_int($limit) && $limit > 0 ? $limit : self::LIMIT;
-        return [];
+        $assets = [];
+        $dbh = Dbh::get();
+        return $assets;
     }
 }

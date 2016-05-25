@@ -12,6 +12,20 @@
         {% block require_css %}{% endblock %}
         <link rel="stylesheet" type="text/css" href="/css/page.css">
         <link rel="stylesheet" type="text/css" href="/css/card.css">
+        <script type="text/javascript">
+            function commitLog(arc_no){
+                $.ajax({
+                    type: "POST", url: "/{{db}}/log/commit",
+                    data:{
+                        db      : '{{db}}',
+                        arc_no  : arc_no
+                    },
+                    success: function(data){
+                    }
+                });
+                //  window.open(link);
+            }
+        </script>
     </head>
     <body>
         <div class="container">

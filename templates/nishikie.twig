@@ -6,7 +6,9 @@
             <div class="row">
                 <div class="card col-xs-12 col-md-3">
                     <a href="{{item.url}}"><img src="{{item.cover}}" class="img-thumbnail"></a><br>
-                    <div class="title">タイトル :<br>{{item.title}}<br></div>
+                    <div class="title">
+                        <span style="cursor: pointer" onclick="commitLog('{{item.id}}')">タイトル :<br>{{item.title}}<br></span>
+                    </div>
                 </div>
         {% elseif (loop.index % 4 == 0 or loop.last) %}
                 <div class="card col-xs-12 col-md-3">

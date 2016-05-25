@@ -15,7 +15,7 @@ class Init
      */
     public function insertLog()
     {
-        $db = new \Hrgruri\Icd3\DB\SetupDB;
+        $db = new \Hrgruri\Icd3\SetupDB;
         for($i = 1; $i < 60; $i++) {
             $data = json_decode(file_get_contents("{$this->dir}/log_{$i}.json"));
             print "{$i} =====\n";

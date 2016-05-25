@@ -1,6 +1,8 @@
 <?php
 namespace Hrgruri\Icd3\DB;
 
+use Hrgruri\Icd3\Dbh;
+
 class SetupDB extends DB
 {
     /**
@@ -17,7 +19,8 @@ class SetupDB extends DB
             $db_id      = $this->getDbByName($matchd[2]);
             $user_id    = $this->getArcUser($log);
             $asset_id   = $this->getAsset($db_id, $log->request_query_array->f1);
-            $sth = $this->dbh->prepare('INSERT INTO arc_log(user_id, asset_id, date, time)
+            $dbh = Dbh::get();
+            $sth = $dbh->prepare('INSERT INTO arc_log(user_id, asset_id, date, time)
                 VALUES (:ui, :ai, :date, :time)'
             );
             $sth->bindParam(':ui', $user_id, \PDO::PARAM_INT);
@@ -37,14 +40,15 @@ class SetupDB extends DB
      */
     public function getDbByName(string $name)
     {
-        $sth = $this->dbh->prepare('SELECT id FROM db WHERE name = :name');
+        $dbh = Dbh::get();
+        $sth = $dbh->prepare('SELECT id FROM db WHERE name = :name');
         $sth->bindParam(':name', $name, \PDO::PARAM_STR);
         $sth->execute();
         if ($sth->rowCount() <= 0) {
-            $sth = $this->dbh->prepare('INSERT INTO db(name) VALUES (:name)');
+            $sth = $dbh->prepare('INSERT INTO db(name) VALUES (:name)');
             $sth->bindParam(':name', $name, \PDO::PARAM_STR);
             $sth->execute();
-            $id = $this->dbh->lastInsertId();
+            $id  = $dbh->lastInsertId();
         } else {
             $data = $sth->fetch();
             $id = $data['id'];
@@ -62,7 +66,8 @@ class SetupDB extends DB
      */
     public function getAsset(int $db, string $name)
     {
-        $sth = $this->dbh->prepare('SELECT asset.id FROM asset
+        $dbh = Dbh::get();
+        $sth = $dbh->prepare('SELECT asset.id FROM asset
             WHERE asset.name = :name
             AND asset.db = :db'
         );
@@ -70,11 +75,11 @@ class SetupDB extends DB
         $sth->bindParam(':db', $db, \PDO::PARAM_INT);
         $sth->execute();
         if ($sth->rowCount() <= 0) {
-            $sth = $this->dbh->prepare('INSERT INTO asset(db, name) VALUES (:db, :name)');
+            $sth = $dbh->prepare('INSERT INTO asset(db, name) VALUES (:db, :name)');
             $sth->bindParam(':db', $db, \PDO::PARAM_INT);
             $sth->bindParam(':name', $name, \PDO::PARAM_STR);
             $sth->execute();
-            $id = $this->dbh->lastInsertId();
+            $id = $dbh->lastInsertId();
         } else {
             $id = $sth->fetch()['id'];
         }
@@ -83,7 +88,8 @@ class SetupDB extends DB
 
     private function getArcUser(\stdClass $log)
     {
-        $sth = $this->dbh->prepare('SELECT id FROM arc_user
+        $dbh = Dbh::get();
+        $sth = $dbh->prepare('SELECT id FROM arc_user
             WHERE ip = :ip
             AND user_agent = :ua
             AND date = :date
@@ -93,12 +99,12 @@ class SetupDB extends DB
         $sth->bindParam(':date', $log->date);
         $sth->execute();
         if ($sth->rowCount() <= 0) {
-            $sth = $this->dbh->prepare('INSERT INTO arc_user(ip, user_agent, date) VALUES (:ip, :ua, :date)');
+            $sth = $dbh->prepare('INSERT INTO arc_user(ip, user_agent, date) VALUES (:ip, :ua, :date)');
             $sth->bindParam(':ip', $log->ip, \PDO::PARAM_STR);
             $sth->bindParam(':ua', $log->user_agent, \PDO::PARAM_STR);
             $sth->bindParam(':date', $log->date);
             $sth->execute();
-            $id = $this->dbh->lastInsertId();
+            $id = $dbh->lastInsertId();
         } else {
             $id = $sth->fetch()['id'];
         }
@@ -107,7 +113,8 @@ class SetupDB extends DB
 
     public function insertPoints($parent, $child, $points)
     {
-        $sth = $this->dbh->prepare('INSERT INTO recommend(parent, child, points)
+        $dbh = Dbh::get();
+        $sth = $dbh->prepare('INSERT INTO recommend(parent, child, points)
             VALUES(:p, :c, :points)
         ');
         $sth->bindParam(':p', $parent, \PDO::PARAM_INT);
@@ -118,7 +125,8 @@ class SetupDB extends DB
 
     public function getCountTable()
     {
-        $sth = $this->dbh->prepare('select user_id, asset_id, count(*) as num from arc_log group by user_id, asset_id');
+        $dbh = DBh::get();
+        $sth = $dbh->prepare('select user_id, asset_id, count(*) as num from arc_log group by user_id, asset_id');
         $sth->execute();
         return $sth->fetchAll();
     }

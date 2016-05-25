@@ -1,36 +1,40 @@
 <?php
 namespace Hrgruri\Icd3\Model;
 
-class Session extends \Hrgruri\Icd3\DB
+use Hrgruri\Icd3\Dbh;
+
+class Session
 {
     private $id;
     private $token;
 
-    public function get()
+    public static function get()
     {
-        if (!$this->checkSession()) {
-            $this->token = bin2hex(openssl_random_pseudo_bytes(128));
-            $this->id    = $this->insertUser();
+        if (!self::checkSession()) {
+            $token = bin2hex(openssl_random_pseudo_bytes(128));
+            $id    = self::insertUser($token);
         } else {
-            $this->id       = $_SESSION['id'];
-            $this->token    = $_SESSION['token'];
+            $id       = $_SESSION['id'];
+            $token    = $_SESSION['token'];
         }
-        return ['id' => $this->id, 'token' => $this->token];
+        return ['id' => $id, 'token' => $token];
     }
 
-    private function insertUser()
+    private static function insertUser(string $token)
     {
-        $sth = $this->dbh->prepare('INSERT INTO user(token) VALUES (:token)');
-        $sth->bindParam(':token', $this->token, \PDO::PARAM_STR);
+        $dbh = Dbh::get();
+        $sth = $dbh->prepare('INSERT INTO user(token) VALUES (:token)');
+        $sth->bindParam(':token', $token, \PDO::PARAM_STR);
         $sth->execute();
-        return (int)$this->dbh->lastInsertId();
+        return (int)$dbh->lastInsertId();
     }
 
-    private function checkSession()
+    private static function checkSession()
     {
         $flag = false;
         if (isset($_SESSION['id']) && isset($_SESSION['token'])) {
-            $sth = $this->dbh->prepare(
+            $dbh = Dbh::get();
+            $sth = $dbh->prepare(
                 'SELECT * FROM user
                 WHERE id = :id AND token = :token'
             );

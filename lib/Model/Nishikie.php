@@ -2,8 +2,9 @@
 namespace Hrgruri\Icd3\Model;
 
 use Hrgruri\Rarcs\NishikieClient as Client;
+use Hrgruri\Icd3\Dbh;
 
-class Nishikie extends \Hrgruri\Icd3\DB
+class Nishikie
 {
     const COUNT = 4;
     const COUNT_LIMIT = 24;
@@ -11,7 +12,9 @@ class Nishikie extends \Hrgruri\Icd3\DB
     public static function search($param)
     {
         $param = self::correctParam($param);
-        return (new Client())->search($param);
+        $assets = (new Client())->search($param);
+        self::insertAssets($assets);
+        return $assets;
     }
 
     private static function correctParam($param)
@@ -24,21 +27,24 @@ class Nishikie extends \Hrgruri\Icd3\DB
 
     public static function getDetail($id)
     {
-        return (new Client())->getDetail($id);
+        $asset = (new Client())->getDetail($id);
+        self::insertAssets([$asset]);
+        return $asset;
     }
 
-    public function insertAssets(array $assets)
+    private static function insertAssets(array $assets)
     {
         $db = 'nishikie';
-        $sth = $this->dbh->prepare('SELECT id FROM db WHERE name = :db');
+        $dbh = Dbh::get();
+        $sth = $dbh->prepare('SELECT id FROM db WHERE name = :db');
         $sth->bindParam(':db', $db, \PDO::PARAM_INT);
         $sth->execute();
         $db = ($sth->fetch())['id'];
-        $sth_in = $this->dbh->prepare('SELECT * FROM asset
+        $sth_in = $dbh->prepare('SELECT * FROM asset
             WHERE name = :name
             AND db = :db'
         );
-        $sth_insert = $this->dbh->prepare('INSERT INTO asset(db, name) VALUES (:db, :name)');
+        $sth_insert = $dbh->prepare('INSERT INTO asset(db, name) VALUES (:db, :name)');
         foreach ($assets as $asset) {
             $sth_in->bindParam(':name', $asset->id, \PDO::PARAM_STR);
             $sth_in->bindParam(':db', $db, \PDO::PARAM_INT);

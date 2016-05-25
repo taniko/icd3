@@ -11,7 +11,7 @@ class Cal
     public function __construct()
     {
         $config = (\Hrgruri\Icd3\Config::getInstance())->get('slack');
-        $this->db = new \Hrgruri\Icd3\DB\SetupDB;
+        $this->db = new \Hrgruri\Icd3\SetupDB;
         $this->slack = new \Hrgruri\Icd3\Slack($config);
     }
 
