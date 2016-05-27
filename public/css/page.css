@@ -1,3 +1,12 @@
 body{
     background-color: #EEE;
 }
+
+.pager .prev_link a {
+    margin-left: 10px;
+    float: left;
+}
+.pager .next_link a {
+    margin-right: 10px;
+    float: right;
+}
