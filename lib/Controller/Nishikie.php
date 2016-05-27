@@ -19,7 +19,6 @@ class Nishikie
     public static function showSearch($args, $twig, $param)
     {
         self::setSession();
-        $param['count'] = 1;
         $assets = M::search($param);
         $html = ($twig->loadTemplate('nishikie.twig'))->render([
             'title'     => '浮世絵データベース',
