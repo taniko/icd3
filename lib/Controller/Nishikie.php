@@ -23,7 +23,9 @@ class Nishikie
         $html = ($twig->loadTemplate('nishikie.twig'))->render([
             'title'     => '浮世絵データベース',
             'assets'    => $assets,
-            'db'        => self::NAME
+            'db'        => self::NAME,
+            'next_link' => M::getNextLink($param),
+            'prev_link' => M::getPrevLink($param)
         ]);
         return $html;
     }

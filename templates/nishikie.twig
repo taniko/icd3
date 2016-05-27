@@ -45,3 +45,14 @@
         <input class="submit_btn" type="submit" value="検索">
     </form>
 {% endblock %}
+
+{% block link_block %}
+    <ul class = "pager">
+        {% if prev_link is not null %}
+            <li class = "prev_link"><a href = "{{prev_link}}">&larr; Prev</a></li>
+        {% endif %}
+        {% if next_link is not null %}
+            <li class = "next_link"><a href = "{{next_link}}">Next &rarr;</a></li>
+        {% endif %}
+    </ul>
+{% endblock %}

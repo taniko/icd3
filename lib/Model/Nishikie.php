@@ -7,7 +7,7 @@ use Hrgruri\Icd3\Dbh;
 class Nishikie
 {
     const COUNT = 4;
-    const COUNT_LIMIT = 24;
+    const COUNT_MAX = 24;
 
     public static function search($param)
     {
@@ -20,8 +20,12 @@ class Nishikie
     private static function correctParam($param)
     {
         $param['count'] = (int)($param['count'] ?? 0);
-        $param['count'] = $param['count'] > self::COUNT_LIMIT ? self::COUNT_LIMIT : $param['count'];
+        $param['count'] = $param['count'] > self::COUNT_MAX ? self::COUNT_MAX : $param['count'];
         $param['count'] = $param['count'] > 0 ? $param['count'] : self::COUNT;
+
+        $param['page'] = (int)($param['page'] ?? 1);
+        $param['page'] = $param['page'] > 0 ? $param['page'] : 1;
+
         return $param;
     }
 
@@ -55,5 +59,39 @@ class Nishikie
                 $sth_insert->execute();
             }
         }
+    }
+
+    /**
+     * @param  array  $param
+     * @return string
+     */
+    public static function getNextLink(array $param)
+    {
+        $url = '/nishikie/search?';
+        $param = self::correctParam($param);
+        $param['page']++;
+        foreach ($param as $key => $val) {
+            $url .= "{$key}={$val}&";
+        }
+        return $url;
+    }
+
+    /**
+     * @param  array  $param
+     * @return string | null
+     */
+    public static function getPrevLink(array $param)
+    {
+        $url = '/nishikie/search?';
+        $param = self::correctParam($param);
+        $param['page']--;
+        if ($param['page'] > 0) {
+            foreach ($param as $key => $val) {
+                $url .= "{$key}={$val}&";
+            }
+        } else {
+            $url = null;
+        }
+        return $url;
     }
 }
