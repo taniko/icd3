@@ -131,7 +131,7 @@ class Recommend
                 $sth->execute();
                 $client = new NishikieClient();
                 $i      = 0;
-                while (($data = $sth->fetch()) && $i < self::LIMIT) {
+                while (($data = $sth->fetch()) && $i < $limit) {
                     try {
                         $assets[] = $client->getDetail($asset_list[$data['asset_id']]);
                         $i++;

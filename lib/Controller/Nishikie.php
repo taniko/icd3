@@ -13,7 +13,12 @@ class Nishikie
     {
         $session = self::setSession();
         $assets = Recommend::getByUser(self::NAME, $session['id']);
-        return 'index';
+        $html = ($twig->loadTemplate('nishikie.twig'))->render([
+            'title'     => '浮世絵データベース',
+            'assets'    => $assets,
+            'db'        => self::NAME,
+        ]);
+        return $html;
     }
 
     public static function showSearch($args, $twig, $param)
