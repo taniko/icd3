@@ -9,6 +9,6 @@
         "coderstephen/slack-client": "^0.2.3",
         "slim/slim": "^3.4",
         "twig/twig": "^1.24",
-        "hrgruri/rarcs": "^0.2.1"
+        "hrgruri/rarcs": "^0.3.0"
     }
 }
