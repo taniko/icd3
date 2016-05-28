@@ -195,7 +195,9 @@ class Recommend
                 try {
                     $assets[] = $client->getDetail($data['name']);
                     $i++;
-                } catch (\Execption $e) {
+                } catch (\InvalidArgumentException $e) {
+                    error_log("{$e->getMessage()} :{$db}/{$data['name']}");
+                } catch (\Exception $e) {
                     error_log($e->getMessage());
                 }
             }

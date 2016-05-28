@@ -13,6 +13,9 @@ class Nishikie
     {
         $session = self::setSession();
         $assets = Recommend::getByUser(self::NAME, $session['id']);
+        if (count($assets) <= 0) {
+            $assets = Recommend::getByPopular(self::NAME, $session['id']);
+        }
         $html = ($twig->loadTemplate('nishikie.twig'))->render([
             'title'     => '浮世絵データベース',
             'assets'    => $assets,
