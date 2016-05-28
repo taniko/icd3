@@ -2,6 +2,7 @@
 namespace Hrgruri\Icd3\Model;
 
 use Hrgruri\Rarcs\NishikieClient;
+use Hrgruri\Rarcs\BooksClient;
 use Hrgruri\Icd3\Dbh;
 
 class Recommend
@@ -34,6 +35,15 @@ class Recommend
                     continue;
                 }
             }
+        } elseif ($db == 'books') {
+            $client = new BooksClient();
+            for ($i = 0; $i < $limit && ($data = $sth->fetch()); $i++) {
+                try {
+                    $res[] = $client->getDetail($data['name']);
+                } catch (\Exception $e) {
+                    continue;
+                }
+            }
         }
         return $res;
     }
@@ -50,15 +60,9 @@ class Recommend
         $limit = is_int($limit) && $limit > 0 ? $limit : self::LIMIT;
         $assets = [];
         try {
-            $dbh = Dbh::get();
+            $db_id = self::getDB($db);
 
-            // DBのIDを求める
-            $sth = $dbh->prepare('SELECT db.id FROM db
-                WHERE db.name = :db'
-            );
-            $sth->bindParam(':db', $db, \PDO::PARAM_STR);
-            $sth->execute();
-            $db_id = $sth->fetch()['id'];
+            $dbh = Dbh::get();
 
             /*  ユーザの見たアイテムを求める */
             $user_items = [];
@@ -129,7 +133,13 @@ class Recommend
                 $sth->bindParam(':ru', $recommend_user, \PDO::PARAM_INT);
                 $sth->bindParam(':id', $id, \PDO::PARAM_INT);
                 $sth->execute();
-                $client = new NishikieClient();
+                if ($db == 'nishikie') {
+                    $client = new NishikieClient();
+                } elseif ($db = 'books') {
+                    $client = new BooksClient();
+                } else {
+                    throw new \Exception();
+                }
                 $i      = 0;
                 while (($data = $sth->fetch()) && $i < $limit) {
                     try {
@@ -146,5 +156,69 @@ class Recommend
             error_log($e->getMessage());
         }
         return $assets;
+    }
+
+    /**
+     * 人気度順の推薦アイテムを取得する
+     * @param  string $db    DB名
+     * @param  int    $id    ユーザID
+     * @param  int    $limit 取得件数
+     * @return array
+     */
+    public static function getByPopular(string $db, int $id, int $limit = self::LIMIT)
+    {
+        $limit  = $limit > 0 ? $limit : self::LIMIT;
+        $assets = [];
+        try {
+            if ($db == 'nishikie') {
+                $client = new NishikieClient();
+            } elseif ($db == 'books') {
+                $client = new BooksClient();
+            } else {
+                throw new \Exception("対象外のDB : {$db}");
+            }
+            $db_id = self::getDB($db);
+            $dbh = Dbh::get();
+            $sth = $dbh->prepare('SELECT arc_log.asset_id, asset.name ,count(arc_log.asset_id) AS num
+                FROM asset, arc_log
+                WHERE asset.db = :db
+                AND asset.id NOT IN (SELECT asset_id FROM log WHERE user_id = :ui)
+                AND asset.id = arc_log.asset_id
+                GROUP BY (arc_log.asset_id)
+                ORDER BY num DESC'
+            );
+            $sth->bindParam(':db',  $db_id, \PDO::PARAM_INT);
+            $sth->bindParam(':ui',  $id, \PDO::PARAM_INT);
+            $sth->execute();
+            $i = 0;
+            while (($data = $sth->fetch()) && $i < $limit) {
+                try {
+                    $assets[] = $client->getDetail($data['name']);
+                    $i++;
+                } catch (\Execption $e) {
+                    error_log($e->getMessage());
+                }
+            }
+        } catch (\PDOExecption $e) {
+            error_log($e->getMessage());
+        } catch (\Execption $e) {
+            error_log($e->getMessage());
+        }
+        return $assets;
+    }
+
+    /**
+     * DBのIDを取得する
+     * @param  string $name DB名
+     * @return int DBのID
+     */
+    private static function getDB(string $name) : int {
+        $dbh = Dbh::get();
+        $sth = $dbh->prepare('SELECT db.id FROM db
+            WHERE db.name = :db'
+        );
+        $sth->bindParam(':db', $name, \PDO::PARAM_STR);
+        $sth->execute();
+        return $sth->fetch()['id'];
     }
 }

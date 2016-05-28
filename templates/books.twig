@@ -1,0 +1,76 @@
+{% extends 'base.twig' %}
+
+{% block main_block %}
+    {% for item in assets %}
+        {% if loop.index % 4 == 1 %}
+            <div class="row">
+                <div class="card col-xs-12 col-md-3">
+                    <span style="cursor: pointer" onclick="commitLog('{{item.id}}')">
+                        <a href="{{item.url}}"><img src="{{item.cover}}" class="img-thumbnail"></a>
+                    </span>
+                    <div class="title">
+                        タイトル :<br>
+                        <span style="cursor: pointer" onclick="commitLog('{{item.id}}')">
+                            <a href="{{item.url}}">{{item.title}}</a><br>
+                        </span>
+                    </div>
+                </div>
+        {% elseif (loop.index % 4 == 0 or loop.last) %}
+                <div class="card col-xs-12 col-md-3">
+                    <span style="cursor: pointer" onclick="commitLog('{{item.id}}')">
+                        <a href="{{item.url}}"><img src="{{item.cover}}" class="img-thumbnail"></a>
+                    </span>
+                    <div class="title">
+                        タイトル :<br>
+                        <span style="cursor: pointer" onclick="commitLog('{{item.id}}')">
+                            <a href="{{item.url}}">{{item.title}}</a><br>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="card col-xs-12 col-md-3">
+                <span style="cursor: pointer" onclick="commitLog('{{item.id}}')">
+                    <a href="{{item.url}}"><img src="{{item.cover}}" class="img-thumbnail"></a>
+                </span>
+                <div class="title">
+                    タイトル :<br>
+                    <span style="cursor: pointer" onclick="commitLog('{{item.id}}')">
+                        <a href="{{item.url}}">{{item.title}}</a><br>
+                    </span>
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+{% endblock %}
+
+{% block sub_block %}
+    <form action='/books/search' method="get">
+        <table>
+            <tr>
+                <td width="150" align="right" bgcolor="#c993ff">ARC管理番号:</td>
+                <td width="250"><input type="text" name="id" size="20"></td>
+                <td width="150" align="right" bgcolor="#c993ff">資料名:</td>
+                <td width="250"><input type="text" name="title" size="20"></td>
+            </tr>
+            <tr>
+                <td width="150" align="right" bgcolor="#c993ff">作者:</td>
+                <td width="250"><input type="text" name="author" size="20"></td>
+                <td width="150" align="right" bgcolor="#c993ff">件数:</td>
+                <td width="250"><input type="number" value="4" name="count" size="20"></td>
+            </tr>
+        </table>
+        <input class="submit_btn" type="submit" value="検索">
+    </form>
+{% endblock %}
+
+{% block link_block %}
+    <ul class = "pager">
+        {% if prev_link is not null %}
+            <li class = "prev_link"><a href = "{{prev_link}}">&larr; Prev</a></li>
+        {% endif %}
+        {% if next_link is not null %}
+            <li class = "next_link"><a href = "{{next_link}}">Next &rarr;</a></li>
+        {% endif %}
+    </ul>
+{% endblock %}

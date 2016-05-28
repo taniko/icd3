@@ -36,6 +36,23 @@ class Route
             );
         });
 
+        /*  booksの設定    */
+        $app->get('/books[/]', function ($request, $response, $args) {
+            return \Hrgruri\Icd3\Controller\Books::showIndex(
+                $args,
+                self::$twig,
+                $request->getQueryParams()
+            );
+        });
+
+        $app->get('/books/search[/]', function ($request, $response, $args) {
+            return \Hrgruri\Icd3\Controller\Books::showSearch(
+                $args,
+                self::$twig,
+                $request->getQueryParams()
+            );
+        });
+
         /*  Log */
         $app->post('/{db}/log/commit[/]', function ($request, $response, $args) {
             \Hrgruri\Icd3\Model\log::commit(
