@@ -32,6 +32,8 @@ class Books
             'title'     => '古典データベース',
             'assets'    => $assets,
             'db'        => self::NAME,
+            'next_link' => M::getNextLink($param),
+            'prev_link' => M::getPrevLink($param)
         ]);
         return $html;
     }
