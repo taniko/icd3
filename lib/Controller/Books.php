@@ -11,15 +11,19 @@ class Books
 
     public static function showIndex($args, $twig, $param)
     {
-        $session = self::setSession();
-        $assets = Recommend::getByUser(self::NAME, $session['id']);
+        $session        = self::setSession();
+        $date           = $param['date'] ?? date("Y-m-d");
+        $assets         = Recommend::getByUser(self::NAME, $session['id']);
+        $date_recommend = Recommend::getByDate(self::NAME, $session['id'], $date);
         if (count($assets) <= 0) {
             $assets = Recommend::getByPopular(self::NAME, $session['id']);
         }
         $html = ($twig->loadTemplate('books.twig'))->render([
             'title'     => '古典データベース',
-            'assets'    => $assets,
             'db'        => self::NAME,
+            'assets'    => $assets,
+            'date_rec'  => $date_recommend,
+            'date'      => $date
         ]);
         return $html;
     }

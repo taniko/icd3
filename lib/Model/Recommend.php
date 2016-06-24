@@ -210,6 +210,83 @@ class Recommend
     }
 
     /**
+     * 日付を元に推薦アイテムを取得する
+     * @param  string   $db     データベース名
+     * @param  int      $id     ユーザーID
+     * @param  string   $date   日付 (yyyy-mm-dd)
+     * @param  int      $limit  最大取得件数
+     * @return array
+     */
+    public static function getByDate(
+        string $db,
+        int $id,
+        string $date,
+        int $limit = self::LIMIT
+    ) : array {
+        $assets = [];
+        $limit = $limit > 0 ? $limit : self::LIMIT;
+
+        /*  $dateを'm-d'の形に修正する  */
+        if (preg_match('/[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}/', $date) != 1) {
+            $date = date("Y-m-d");
+        }
+        $tmp    =   explode('-', $date);
+        $date   =   '';
+        $date   .= strlen($tmp[1])>1 ? $tmp[1] : '0'.$tmp[1];
+        $date   .= strlen($tmp[2])>1 ? '-'.$tmp[2] : '-0'.$tmp[2];
+        
+        try {
+            if ($db == 'nishikie') {
+                $client = new NishikieClient();
+            } elseif ($db == 'books') {
+                $client = new BooksClient();
+            } else {
+                throw new \Exception("対象外のDB : {$db}");
+            }
+            $db_id = self::getDB($db);
+            $dbh = Dbh::get();
+            $sql = 'SELECT arc_log.asset_id, asset.name, count(arc_log.asset_id) as num
+                FROM arc_log, asset
+                WHERE (DATE_FORMAT(date, "%m-%d") = :da)
+                AND asset.id NOT IN (
+                    SELECT log.asset_id
+                    FROM log
+                    WHERE log.user_id = :id
+                    AND (DATE_FORMAT(date, "%m-%d") = :today))
+                AND asset.id = arc_log.asset_id
+                AND asset.db = :db
+                GROUP BY arc_log.asset_id
+                ORDER BY num DESC
+                LIMIT 100';
+            $sth    = $dbh->prepare($sql);
+            $today  = date("m-d");
+            $sth->bindParam(':id', $id, \PDO::PARAM_INT);
+            $sth->bindParam(':db', $db_id, \PDO::PARAM_INT);
+            $sth->bindParam(':today',$today, \PDO::PARAM_STR);
+            $sth->bindParam(':da',$date, \PDO::PARAM_STR);
+            $sth->execute();
+            $i = 0;
+            while (($asset = $sth->fetch()) && $i < $limit) {
+                try {
+                    $assets[] = $client->getDetail($asset['name']);
+                    $i++;
+                } catch (\InvalidArgumentException $e) {
+                    error_log("{$e->getMessage()} :{$db}/{$asset['name']}");
+                } catch (\Exception $e) {
+                    error_log($e->getMessage());
+                }
+            }
+        } catch(\PDOExecption $e) {
+            $assets = [];
+            error_log($e->getMessage());
+        } catch(\Exception $e) {
+            error_log($e->getMessage());
+        }
+        return $assets;
+    }
+
+
+    /**
      * DBのIDを取得する
      * @param  string $name DB名
      * @return int DBのID
