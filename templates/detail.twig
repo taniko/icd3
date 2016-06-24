@@ -1,18 +1,23 @@
 {% extends 'base.twig' %}
 
 {% block main_block %}
+<div class="row">
     <div class="card col-xs-12 col-md-4 col-md-offset-4">
         <a href="{{info.url}}"><img src="{{info.cover}}" class="img-thumbnail"></a><br>
         <div class="title">タイトル :<br>{{info.title}}<br></div>
         <div class="artist">絵師 : {{info.artist}}</div>
     </div>
+</div>
 {% endblock %}
 
 {% block sub_block %}
+{{info.title}}を見た人はこちらも見ています
+<div class="row">
     {% for item in recommend %}
         <div class="card col-xs-12 col-md-3">
             <a href="{{item.url}}"><img src="{{item.cover}}" class="img-thumbnail"></a><br>
             <div class="title">タイトル :<br>{{item.title}}<br></div>
         </div>
     {% endfor %}
+</div>
 {% endblock %}
