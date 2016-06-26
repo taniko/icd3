@@ -18,9 +18,10 @@ class Detail
             }
             $recommend  = Recommend::getByDetail($args['db'], $args['id'], 4);
             $html = ($twig->loadTemplate('detail.twig'))->render([
-                'title'     => '浮世絵データベース',
-                'info'      => $info,
-                'recommend' => $recommend
+                'db'        =>  $args['db'],
+                'title'     =>  '浮世絵データベース',
+                'info'      =>  $info,
+                'recommend' =>  $recommend
             ]);
         } catch(\Exception $e) {
             $html = 'error';

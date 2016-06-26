@@ -16,7 +16,12 @@
     {% for item in recommend %}
         <div class="card col-xs-12 col-md-3">
             <a href="{{item.url}}"><img src="{{item.cover}}" class="img-thumbnail"></a><br>
-            <div class="title">タイトル :<br>{{item.title}}<br></div>
+            <div class="title">
+                タイトル :<br>
+                <span style="cursor: pointer" onclick="commitLog('{{item.id}}')">
+                    <a href="/{{db}}/detail/{{item.id}}">{{item.title}}</a><br>
+                </span>
+            </div>
         </div>
     {% endfor %}
 </div>
