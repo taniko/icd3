@@ -1,4 +1,4 @@
-{% extends 'base.twig' %}
+{% extends 'base/base.twig' %}
 
 {% block main_block %}
 あなたへのおすすめ
@@ -7,40 +7,16 @@
         {% if loop.index % 4 == 1 %}
             <div class="row">
                 <div class="card col-xs-12 col-md-3">
-                    <span style="cursor: pointer" onclick="commitLog('{{item.id}}')">
-                        <a href="{{item.url}}"><img src="{{item.cover}}" class="img-thumbnail"></a>
-                    </span>
-                    <div class="title">
-                        タイトル :<br>
-                        <span style="cursor: pointer" onclick="commitLog('{{item.id}}')">
-                            <a href="/{{db}}/detail/{{item.id}}">{{item.title}}</a><br>
-                        </span>
-                    </div>
+                    {% include 'base/asset.twig' %}
                 </div>
         {% elseif (loop.index % 4 == 0 or loop.last) %}
                 <div class="card col-xs-12 col-md-3">
-                    <span style="cursor: pointer" onclick="commitLog('{{item.id}}')">
-                        <a href="{{item.url}}"><img src="{{item.cover}}" class="img-thumbnail"></a>
-                    </span>
-                    <div class="title">
-                        タイトル :<br>
-                        <span style="cursor: pointer" onclick="commitLog('{{item.id}}')">
-                            <a href="/{{db}}/detail/{{item.id}}">{{item.title}}</a><br>
-                        </span>
-                    </div>
+                    {% include 'base/asset.twig' %}
                 </div>
             </div>
         {% else %}
             <div class="card col-xs-12 col-md-3">
-                <span style="cursor: pointer" onclick="commitLog('{{item.id}}')">
-                    <a href="{{item.url}}"><img src="{{item.cover}}" class="img-thumbnail"></a>
-                </span>
-                <div class="title">
-                    タイトル :<br>
-                    <span style="cursor: pointer" onclick="commitLog('{{item.id}}')">
-                        <a href="/{{db}}/detail/{{item.id}}">{{item.title}}</a><br>
-                    </span>
-                </div>
+                {% include 'base/asset.twig' %}
             </div>
         {% endif %}
     {% endfor %}
@@ -51,40 +27,16 @@
         {% if loop.index % 4 == 1 %}
             <div class="row">
                 <div class="card col-xs-12 col-md-3">
-                    <span style="cursor: pointer" onclick="commitLog('{{item.id}}')">
-                        <a href="{{item.url}}"><img src="{{item.cover}}" class="img-thumbnail"></a>
-                    </span>
-                    <div class="title">
-                        タイトル :<br>
-                        <span style="cursor: pointer" onclick="commitLog('{{item.id}}')">
-                            <a href="/{{db}}/detail/{{item.id}}">{{item.title}}</a><br>
-                        </span>
-                    </div>
+                    {% include 'base/asset.twig' %}
                 </div>
         {% elseif (loop.index % 4 == 0 or loop.last) %}
                 <div class="card col-xs-12 col-md-3">
-                    <span style="cursor: pointer" onclick="commitLog('{{item.id}}')">
-                        <a href="{{item.url}}"><img src="{{item.cover}}" class="img-thumbnail"></a>
-                    </span>
-                    <div class="title">
-                        タイトル :<br>
-                        <span style="cursor: pointer" onclick="commitLog('{{item.id}}')">
-                            <a href="/{{db}}/detail/{{item.id}}">{{item.title}}</a><br>
-                        </span>
-                    </div>
+                    {% include 'base/asset.twig' %}
                 </div>
             </div>
         {% else %}
             <div class="card col-xs-12 col-md-3">
-                <span style="cursor: pointer" onclick="commitLog('{{item.id}}')">
-                    <a href="{{item.url}}"><img src="{{item.cover}}" class="img-thumbnail"></a>
-                </span>
-                <div class="title">
-                    タイトル :<br>
-                    <span style="cursor: pointer" onclick="commitLog('{{item.id}}')">
-                        <a href="/{{db}}/detail/{{item.id}}">{{item.title}}</a><br>
-                    </span>
-                </div>
+                {% include 'base/asset.twig' %}
             </div>
         {% endif %}
     {% endfor %}
