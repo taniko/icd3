@@ -1,5 +1,18 @@
 {% extends 'base/base.twig' %}
 
+{% block require_opt %}
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/i18n/jquery.ui.datepicker-ja.min.js"></script>
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/ui-lightness/jquery-ui.css" >
+    <script>
+      $(function() {
+        $("#datepicker").datepicker({
+            dateFormat: 'yy-mm-dd'
+        });
+      });
+    </script>
+{% endblock %}
+
 {% block main_block %}
 あなたへのおすすめ
 <div class="row">
@@ -21,7 +34,12 @@
         {% endif %}
     {% endfor %}
 </div>
-{{date}}のおすすめ
+
+<form action='/nishikie' method="get">
+    <input type="text" id="datepicker" name="date" value="{{date}}" size="10">のおすすめを
+    <input class="submit_btn" type="submit" value="表示">
+</form>
+
 <div class="row">
     {% for item in date_rec %}
         {% if loop.index % 4 == 1 %}
