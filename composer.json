@@ -1,14 +1,17 @@
 {
     "autoload" : {
         "psr-4" : {
-            "Hrgruri\\Icd3\\":"lib"
+            "Hrgruri\\Icd3\\":"src/libs"
         }
     },
     "require" : {
         "devristo/phpws" : "dev-master",
         "coderstephen/slack-client": "^0.2.3",
         "slim/slim": "^3.4",
-        "twig/twig": "^1.24",
-        "hrgruri/rarcs": "^0.3.0"
+        "slim/twig-view": "^2.1",
+        "monolog/monolog": "^1.20",
+        "hrgruri/rarcs": "^0.3.0",
+        "slim/csrf": "^0.7.0",
+        "illuminate/database": "^5.2"
     }
 }

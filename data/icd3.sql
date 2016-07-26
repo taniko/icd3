@@ -44,3 +44,11 @@ user_id int,
 asset_id int,
 datetime datetime
 );
+
+CREATE TABLE info(
+    asset_id int PRIMARY KEY,
+    artist varchar(127),
+    title varchar(255),
+    cover varchar(255),
+    FOREIGN KEY (asset_id) REFERENCES asset(id)
+);
