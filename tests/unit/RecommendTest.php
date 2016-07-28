@@ -108,4 +108,26 @@ class RecommendTest extends \PHPUnit_Framework_TestCase
         $this->assertInternalType('int', $method->invoke($this->recommend, 'books'));
         $this->assertNull($method->invoke($this->recommend, 'dummy'));
     }
+
+    public function testGetRecommendByDB()
+    {
+        $user   = 43;
+        $num    = 2;
+
+        $db     = 'nishikie';
+        $result = $this->recommend->getRecommendByPopular($user, $db, $num);
+        $this->assertInternalType('array', $result);
+        $this->assertTrue(count($result) <= $num);
+        $this->assertContainsOnly(Nishikie::class, $result);
+
+        $db     = 'books';
+        $result = $this->recommend->getRecommendByPopular($user, $db, $num);
+        $this->assertInternalType('array', $result);
+        $this->assertTrue(count($result) <= $num);
+        $this->assertContainsOnly(Nishikie::class, $result);
+
+        $db     = 'unknown';
+        $result = $this->recommend->getRecommendByPopular($user, $db, $num);
+        $this->assertNull($result);
+    }
 }

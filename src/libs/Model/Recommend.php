@@ -147,6 +147,46 @@ class Recommend extends Model
     }
 
     /**
+     * ユーザが見ていないアイテムを人気度順に取得する
+     * @param  int    $id  ユーザID
+     * @param  string $db  DB名
+     * @param  int    $num 取得件数
+     * @return array | null
+     */
+    public function getRecommendByPopular(int $id, string $db, int $num = null)
+    {
+        $num = $this->correctNumber($num);
+        $result = [];
+        try {
+            if ($db !== 'nishikie' && $db !== 'books') {
+                throw new \Exception("unknown db({$db})");
+            }
+            $db_id = $this->getDbId($db);
+            $ignore_assets = (new IgnoreAsset($this->capsule))->getIgnoreList($id);
+            $data = $this->capsule->table('arc_log')
+                ->select(
+                    'arc_log.asset_id',
+                    'asset.name',
+                    $this->capsule::raw('COUNT(arc_log.asset_id) as num')
+                )->where('asset.db', '=', $db_id)
+                ->join('asset', 'arc_log.asset_id', '=', 'asset.id')
+                ->whereNotIn('asset.id', $ignore_assets)
+                ->groupBy('arc_log.asset_id')
+                ->orderBy('num', 'DESC')
+                ->get();
+            $asset_names = [];
+            foreach ($data as $key => $value) {
+                $asset_names[] = $value->name;
+            }
+            print_r($this->getAssetsInfo($asset_names, $db, $num));
+        } catch (\Exception $e) {
+            // print $e->getMessage();
+            $result = null;
+        }
+        return $result;
+    }
+
+    /**
      * 取得件数の修正
      * @param  int $num 取得件数
      * @return int      修正後の取得件数
@@ -163,27 +203,40 @@ class Recommend extends Model
         return $num;
     }
 
+    /**
+     * ARC管理番号から資料情報を取得する
+     * @param  array  $assets
+     * @param  string $type
+     * @param  [type] $num
+     * @return array
+     */
     private function getAssetsInfo(array $assets, string $type, $num = null) : array
     {
         $result = [];
         $num = $this->correctNumber($num);
         if ($type === 'nishikie') {
             $nishikie = new Nishikie($this->capsule);
-            for ($i = 0; $i < $num && $i < count($assets); $i++) {
+            $i = 0;
+            foreach ($assets as $key => $value) {
                 try {
-                    $result[] = $nishikie->getInfo($assets[$i]);
-                } catch (\Exception $e) {
-
-                }
+                    $result[] = $nishikie->getInfo($value);
+                    $i++;
+                    if ($i >= $num) {
+                        break;
+                    }
+                } catch (\Exception $e) {}
             }
         } elseif ($type === 'books') {
             $book = new Book($this->capsule);
-            for ($i = 0; $i < $num && $i < count($assets); $i++) {
+            $i = 0;
+            foreach ($assets as $key => $value) {
                 try {
-                    $result[] = $book->getInfo($assets[$i]);
-                } catch (\Exception $e) {
-
-                }
+                    $result[] = $book->getInfo($value);
+                    $i++;
+                    if ($i >= $num) {
+                        break;
+                    }
+                } catch (\Exception $e) {}
             }
         }
         return $result;

@@ -52,3 +52,8 @@ CREATE TABLE info(
     cover varchar(255),
     FOREIGN KEY (asset_id) REFERENCES asset(id)
 );
+
+CREATE TABLE ignore_assets(
+    user_id int UNSIGNED,
+    asset_id int UNSIGNED
+);
