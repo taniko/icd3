@@ -28,14 +28,14 @@ class RecommendTest extends \PHPUnit_Framework_TestCase
     {
     }
 
-    public function testGetAssetRecommend()
+    public function testGetRecommendByAsset()
     {
         $num    = 1;
         $target = [
             'id'    => 'arcUP2976',
             'db'    => 'nishikie',
         ];
-        $result = $this->recommend->getAssetRecommend($target['id'], $target['db'], $num);
+        $result = $this->recommend->getRecommendByAsset($target['id'], $target['db'], $num);
         $this->assertInternalType('array', $result);
         $this->assertContainsOnly(Nishikie::class, $result);
         $this->assertTrue(count($result) <= $num);
@@ -44,7 +44,7 @@ class RecommendTest extends \PHPUnit_Framework_TestCase
             'id'    => 'arcBK01-0001',
             'db'    => 'books',
         ];
-        $result = $this->recommend->getAssetRecommend($target['id'], $target['db'], $num);
+        $result = $this->recommend->getRecommendByAsset($target['id'], $target['db'], $num);
         $this->assertInternalType('array', $result);
         $this->assertContainsOnly(Book::class, $result);
         $this->assertTrue(count($result) <= $num);
@@ -79,5 +79,33 @@ class RecommendTest extends \PHPUnit_Framework_TestCase
         $result = $method->invoke($this->recommend, $assets_list, $db);
         $this->assertInternalType('array', $result);
         $this->assertContainsOnly(Book::class, $result);
+    }
+
+    public function testGetRecommendByUser()
+    {
+        $user   = 43;
+        $num    = 4;
+
+        $db     = 'nishikie';
+        $result = $this->recommend->getRecommendByUser($user, $db, $num);
+        $this->assertInternalType('array', $result);
+        $this->assertTrue(count($result) <= $num);
+        $this->assertContainsOnly(Nishikie::class, $result);
+
+        $db     = 'books';
+        $result = $this->recommend->getRecommendByUser($user, $db, $num);
+        $this->assertInternalType('array', $result);
+        $this->assertTrue(count($result) <= $num);
+        $this->assertContainsOnly(Book::class, $result);
+    }
+
+    public function testGetDbId()
+    {
+        $method = new \ReflectionMethod(get_class($this->recommend), 'getDbId');
+        $method->setAccessible(true);
+
+        $this->assertInternalType('int', $method->invoke($this->recommend, 'nishikie'));
+        $this->assertInternalType('int', $method->invoke($this->recommend, 'books'));
+        $this->assertNull($method->invoke($this->recommend, 'dummy'));
     }
 }
