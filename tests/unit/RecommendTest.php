@@ -109,7 +109,7 @@ class RecommendTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($method->invoke($this->recommend, 'dummy'));
     }
 
-    public function testGetRecommendByDB()
+    public function testGetRecommendByPopular()
     {
         $user   = 43;
         $num    = 2;
@@ -124,7 +124,7 @@ class RecommendTest extends \PHPUnit_Framework_TestCase
         $result = $this->recommend->getRecommendByPopular($user, $db, $num);
         $this->assertInternalType('array', $result);
         $this->assertTrue(count($result) <= $num);
-        $this->assertContainsOnly(Nishikie::class, $result);
+        $this->assertContainsOnly(Book::class, $result);
 
         $db     = 'unknown';
         $result = $this->recommend->getRecommendByPopular($user, $db, $num);

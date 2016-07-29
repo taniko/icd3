@@ -178,7 +178,7 @@ class Recommend extends Model
             foreach ($data as $key => $value) {
                 $asset_names[] = $value->name;
             }
-            print_r($this->getAssetsInfo($asset_names, $db, $num));
+            $result = $this->getAssetsInfo($asset_names, $db, $num);
         } catch (\Exception $e) {
             // print $e->getMessage();
             $result = null;
