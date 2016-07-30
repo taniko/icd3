@@ -6,12 +6,12 @@ use Psr\Log\LoggerInterface;
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
+use Hrgruri\Icd3\Session;
 use Hrgruri\Icd3\Model\{
     Nishikie,
     Book,
     Recommend
 };
-use Hrgruri\Icd3\Session;
 
 class BookController extends Controller
 {
@@ -28,7 +28,7 @@ class BookController extends Controller
                 $assets = $recommend->getRecommendByPopular($id, 'books');
             }
             $date_recommends = $recommend->getRecommendByDate($date, $id, 'books');
-            $this->view->render($response, 'books.twig', [
+            $this->view->render($response, 'books/index.twig', [
                 'title'     =>  '古典書籍データベース',
                 'assets'    =>  $assets,
                 'date_recommends'    => $date_recommends,

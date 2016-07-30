@@ -7,3 +7,5 @@ $app->get('/', function ($request, $response, $args){
 $app->get('/{db}/detail/{id}[/]', Hrgruri\Icd3\Controller\DetailController::class);
 $app->get('/nishikie[/]', Hrgruri\Icd3\Controller\NishikieController::class);
 $app->get('/books[/]', Hrgruri\Icd3\Controller\BookController::class);
+$app->get('/nishikie/search[/]', '\Hrgruri\Icd3\Controller\SearchController:nishikie');
+$app->get('/books/search[/]', '\Hrgruri\Icd3\Controller\SearchController:books');

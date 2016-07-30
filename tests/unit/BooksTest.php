@@ -3,7 +3,7 @@ namespace Hrgruri\Icd3\Model;
 
 use Hrgruri\Rarcs\BooksClient as Client;
 
-class bookTest extends \PHPUnit_Framework_TestCase
+class BooksTest extends \PHPUnit\Framework\TestCase
 {
     protected $book;
 
@@ -89,5 +89,17 @@ class bookTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($insert_asset->author,  $select_asset->author);
         $this->assertEquals($insert_asset->url,     $select_asset->url);
         $this->assertEquals($insert_asset->cover,   $select_asset->cover);
+    }
+
+    public function testSearch()
+    {
+        $num = 1;
+        $result = $this->book->search([
+            'keyword'   => '義経',
+            'count'     => (string)$num
+        ]);
+        $this->assertInternalType('array', $result);
+        $this->assertContainsOnly(\Hrgruri\Rarcs\Asset\Book::class, $result);
+        $this->assertTrue($num >= count($result));
     }
 }

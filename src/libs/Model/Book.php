@@ -133,4 +133,29 @@ class Book extends Model
         }
         return $asset;
     }
+
+    public function search(array $param)
+    {
+        $result = [];
+        try {
+            $param  = $this->correctParam($param);
+            $result = (new Client())->search($param);
+        } catch (\Exception $e){
+            $this->logger->addError('search_error', $param);
+        }
+        return $result;
+    }
+
+    public function correctParam(array $param)
+    {
+        $param['count'] = intval($param['count'] ?? 4);
+        $param['count'] = $param['count'] <= 8 ? $param['count'] : 8;
+        return [
+            'id'        =>  $param['id']        ?? '',
+            'title'     =>  $param['title']     ?? '',
+            'author'    =>  $param['author']    ?? '',
+            'page'      =>  intval($param['page'] ?? 1),
+            'count'     =>  $param['count']
+        ];
+    }
 }

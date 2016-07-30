@@ -28,7 +28,7 @@ class NishikieController extends Controller
                 $assets = $recommend->getRecommendByPopular($id, 'nishikie');
             }
             $date_recommends = $recommend->getRecommendByDate($date, $id, 'nishikie');
-            $this->view->render($response, 'nishikie.twig', [
+            $this->view->render($response, 'nishikie/index.twig', [
                 'title'     =>  '浮世絵データベース',
                 'assets'    =>  $assets,
                 'date_recommends'    => $date_recommends,
