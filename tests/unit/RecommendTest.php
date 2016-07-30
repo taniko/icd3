@@ -130,4 +130,29 @@ class RecommendTest extends \PHPUnit_Framework_TestCase
         $result = $this->recommend->getRecommendByPopular($user, $db, $num);
         $this->assertNull($result);
     }
+
+    public function testGetRecommendByDate()
+    {
+        $year   = date('Y');
+        $month  = date('m');
+        $day    = date('d');
+        $user   = 43;
+        $num    = 2;
+
+        $db     = 'nishikie';
+        $result = $this->recommend->getRecommendByDate($year, $month, $day, $user, $db, $num);
+        $this->assertInternalType('array', $result);
+        $this->assertContainsOnly(Nishikie::class, $result);
+        $this->assertTrue(count($result) <= $num);
+
+        $db     = 'books';
+        $result = $this->recommend->getRecommendByDate($year, $month, $day, $user, $db, $num);
+        $this->assertInternalType('array', $result);
+        $this->assertContainsOnly(Book::class, $result);
+        $this->assertTrue(count($result) <= $num);
+
+        $db     = 'unknown';
+        $result = $this->recommend->getRecommendByDate($year, $month, $day, $user, $db, $num);
+        $this->assertNull($result);
+    }
 }

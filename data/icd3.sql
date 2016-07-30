@@ -55,5 +55,6 @@ CREATE TABLE info(
 
 CREATE TABLE ignore_assets(
     user_id int UNSIGNED,
-    asset_id int UNSIGNED
+    asset_id int UNSIGNED,
+    date date
 );

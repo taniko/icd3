@@ -186,6 +186,42 @@ class Recommend extends Model
         return $result;
     }
 
+    public function getRecommendByDate($year, $month, $day, $id, $db, $num)
+    {
+        $result = null;
+        try {
+            if ($db !== 'nishikie' && $db !== 'books') {
+                throw new \Exception("unknown db({$db})");
+            }
+            $ia     = new IgnoreAsset($this->capsule);
+            $db_id  = $this->getDbId($db);
+            $date   = $ia->correctDateMD("{$month}-{$day}");
+            if (is_null($date)) {
+                throw new \Exception('date error');
+            }
+            $result = [];
+            $db_id = $this->getDbId($db);
+            $ignore_assets = $ia->getIgnoreListByYMD($id, $date);
+            $data = $this->capsule->table('arc_log')
+                ->select('asset.name', $this->capsule::raw('COUNT(arc_log.asset_id) as num'))
+                ->join('asset', 'arc_log.asset_id', '=', 'asset.id')
+                ->whereRaw($this->capsule::raw("DATE_FORMAT(date, '%m-%d') = '{$date}'"))
+                ->whereNotIn('asset.id', $ignore_assets)
+                ->where('asset.db', '=', $db_id)
+                ->groupBy('arc_log.asset_id')
+                ->orderBy('num', 'DESC')
+                ->get();
+            $asset_names = [];
+            foreach ($data as $key => $value) {
+                $asset_names[] = $value->name;
+            }
+            $result = $this->getAssetsInfo($asset_names, $db, $num);
+        } catch (\Exception $e) {
+            $result = null;
+        }
+        return $result;
+    }
+
     /**
      * 取得件数の修正
      * @param  int $num 取得件数
