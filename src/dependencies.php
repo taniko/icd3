@@ -50,3 +50,11 @@ $container['db'] = function ($container) {
 $container[Hrgruri\Icd3\Controller\DetailController::class] = function ($c) {
     return new \Hrgruri\Icd3\Controller\DetailController($c);
 };
+
+$container[Hrgruri\Icd3\Controller\NishikieController::class] = function ($c) {
+    return new \Hrgruri\Icd3\Controller\NishikieController($c);
+};
+
+$container[Hrgruri\Icd3\Controller\BookController::class] = function ($c) {
+    return new \Hrgruri\Icd3\Controller\BookController($c);
+};

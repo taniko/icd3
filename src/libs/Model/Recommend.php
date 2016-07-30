@@ -186,8 +186,9 @@ class Recommend extends Model
         return $result;
     }
 
-    public function getRecommendByDate($year, $month, $day, $id, $db, $num)
+    public function getRecommendByDate($date, $id, $db, $num = null)
     {
+        $num = $this->correctNumber($num);
         $result = null;
         try {
             if ($db !== 'nishikie' && $db !== 'books') {
@@ -195,7 +196,7 @@ class Recommend extends Model
             }
             $ia     = new IgnoreAsset($this->capsule);
             $db_id  = $this->getDbId($db);
-            $date   = $ia->correctDateMD("{$month}-{$day}");
+            $date   = $ia->correctDateMD($date);
             if (is_null($date)) {
                 throw new \Exception('date error');
             }
