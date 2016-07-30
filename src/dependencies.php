@@ -48,8 +48,5 @@ $container['db'] = function ($container) {
 
 // Controller
 $container[Hrgruri\Icd3\Controller\DetailController::class] = function ($c) {
-    $view       = $c->get('view');
-    $logger     = $c->get('logger');
-    $capsule    = $c->get('db');
-    return new \Hrgruri\Icd3\Controller\DetailController($view, $logger, $capsule);
+    return new \Hrgruri\Icd3\Controller\DetailController($c);
 };

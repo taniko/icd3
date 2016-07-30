@@ -1,6 +1,7 @@
 <?php
 namespace Hrgruri\Icd3\Controller;
 
+use Slim\Container;
 use Slim\Views\Twig;
 use Psr\Log\LoggerInterface;
 use Illuminate\Database\Capsule\Manager as Capsule;
@@ -14,13 +15,11 @@ abstract class Controller
     protected $capsule;
 
     public function __construct(
-        Twig $view,
-        LoggerInterface $logger,
-        Capsule $capsule
+        Container $c
     ) {
-        $this->view     = $view;
-        $this->logger   = $logger;
-        $this->capsule  = $capsule;
+        $this->view     = $c->get('view');
+        $this->logger   = $c->get('logger');
+        $this->capsule  = $c->get('db');
     }
 
     abstract public function __invoke(Request $request, Response $response, $args);

@@ -1,0 +1,32 @@
+{% extends 'base/base.twig' %}
+
+{% block main_block %}
+<div class="row">
+    <div class="card col-xs-12 col-md-4 col-md-offset-4">
+        <a href="{{info.url}}"><img src="{{info.cover}}" class="img-thumbnail"></a><br>
+        <div class="title">タイトル :<br>{{info.title}}<br></div>
+        <div class="artist">絵師 : {{info.artist}}</div>
+    </div>
+</div>
+{% endblock %}
+
+{% block sub_block %}
+{% if recommend|length > 0 %}
+    {{info.title}}を見た人はこちらも見ています
+{% endif %}
+<div class="row">
+    {% if recommend|length > 0 %}
+        {% for item in recommend %}
+            <div class="card col-xs-12 col-md-3">
+                <a href="{{item.url}}"><img src="{{item.cover}}" class="img-thumbnail"></a><br>
+                <div class="title">
+                    タイトル :<br>
+                    <span style="cursor: pointer" onclick="commitLog('{{item.id}}')">
+                        <a href="/{{db}}/detail/{{item.id}}">{{item.title}}</a><br>
+                    </span>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>
+{% endblock %}
