@@ -15,7 +15,20 @@
         <script type="text/javascript">
             function commitLog(arc_no){
                 $.ajax({
-                    type: "POST", url: "/{{db}}/log/commit",
+                    type: "POST", url: "/log/commit",
+                    data:{
+                        db      : '{{db}}',
+                        arc_no  : arc_no
+                    },
+                    success: function(data){
+                    }
+                });
+                //  window.open(link);
+            }
+
+            function commitIgnore(arc_no){
+                $.ajax({
+                    type: "POST", url: "/ignore/commit",
                     data:{
                         db      : '{{db}}',
                         arc_no  : arc_no

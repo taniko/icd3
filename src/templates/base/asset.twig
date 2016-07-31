@@ -4,6 +4,15 @@
 <div class="title">
     タイトル :<br>
     <span style="cursor: pointer" onclick="commitLog('{{item.id}}')">
-        <a href="/{{db}}/detail/{{item.id}}">{{item.title}}</a><br>
+        <a href="/{{db}}/detail/{{item.id}}">{{item.title}}</a>
     </span>
 </div>
+
+{% if item.artist is not null %}
+    <div class="artist">絵師 : {{item.artist}}</div>
+{% elseif  item.author is not null %}
+    <div class="artist">作者 : {{item.author}}</div>
+{% endif %}
+<span style="cursor: pointer" onclick="commitIgnore('{{item.id}}')">
+    <a href="{{uri}}">(無視&#10005;)</a><br>
+</span>

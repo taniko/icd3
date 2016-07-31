@@ -33,7 +33,8 @@ class BookController extends Controller
                 'assets'    =>  $assets,
                 'date_recommends'    => $date_recommends,
                 'date'      =>  $date,
-                'db'        =>  'books'
+                'db'        =>  'books',
+                'uri'       =>  $request->getUri()
             ]);
         } catch(\Exception $e) {
             $this->view->render($response, 'exception/404.twig');

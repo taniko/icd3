@@ -22,6 +22,17 @@ class IgnoreAsset extends Model
         return $result;
     }
 
+    public function insertIgnoreAsset($user, $arc_no, $db)
+    {
+        $asset_id = (new Asset($this->capsule))->getAssetId($arc_no, $db);
+        $this->capsule->table('ignore_assets')
+            ->insert([
+                'user_id'   =>  intval($user),
+                'asset_id'  =>  intval($asset_id),
+                'date'      =>  date('Y-m-d')
+            ]);
+    }
+
     /**
      * 特定の年月日の無視するアイテムの配列を取得する
      * @param  int    $user ユーザID
