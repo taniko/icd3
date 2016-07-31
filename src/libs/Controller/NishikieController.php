@@ -32,7 +32,8 @@ class NishikieController extends Controller
                 'title'     =>  '浮世絵データベース',
                 'assets'    =>  $assets,
                 'date_recommends'    => $date_recommends,
-                'date'      =>  $date
+                'date'      =>  $date,
+                'db'        =>  'nishikie'
             ]);
         } catch(\Exception $e) {
             $this->view->render($response, 'exception/404.twig');

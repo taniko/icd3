@@ -32,7 +32,8 @@ class BookController extends Controller
                 'title'     =>  '古典書籍データベース',
                 'assets'    =>  $assets,
                 'date_recommends'    => $date_recommends,
-                'date'      =>  $date
+                'date'      =>  $date,
+                'db'        =>  'books'
             ]);
         } catch(\Exception $e) {
             $this->view->render($response, 'exception/404.twig');
