@@ -38,7 +38,8 @@ class SearchController
             'title'     =>  '浮世絵データベース',
             'assets'    =>  $assets,
             'prev_link' =>  $prev_link,
-            'next_link' =>  $next_link
+            'next_link' =>  $next_link,
+            'db'        =>  'nishikie'
         ]);
     }
 
@@ -56,7 +57,8 @@ class SearchController
             'title'     =>  '古典書籍データベース',
             'assets'    =>  $assets,
             'prev_link' =>  $prev_link,
-            'next_link' =>  $next_link
+            'next_link' =>  $next_link,
+            'db'        =>  'book'
         ]);
     }
 }

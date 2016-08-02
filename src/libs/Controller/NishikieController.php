@@ -21,7 +21,7 @@ class NishikieController extends Controller
             $session = new Session($this->capsule);
             $session->start();
             $id     = ($session->get())['id'];
-            $date   = $args['date'] ?? date("Y-m-d");
+            $date   = $request->getQueryParam('date') ?? date("Y-m-d");
             $recommend   = new Recommend($this->capsule);
             $assets     = $recommend->getRecommendByUser($id, 'nishikie');
             if (count($assets) <= 0) {
