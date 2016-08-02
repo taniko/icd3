@@ -36,6 +36,9 @@ class BookController extends Controller
                 'db'        =>  'books',
                 'uri'       =>  $request->getUri()
             ]);
+        } catch (\PDOException $e) {
+            $this->logger->addAlert("{$e->getMessage()} at {$request->getUri()}");
+            $this->view->render($response, 'exception/404.twig');
         } catch(\Exception $e) {
             $this->view->render($response, 'exception/404.twig');
         }

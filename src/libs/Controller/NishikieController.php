@@ -33,8 +33,12 @@ class NishikieController extends Controller
                 'assets'    =>  $assets,
                 'date_recommends'    => $date_recommends,
                 'date'      =>  $date,
-                'db'        =>  'nishikie'
+                'db'        =>  'nishikie',
+                'uri'       =>  $request->getUri()
             ]);
+        } catch (\PDOException $e) {
+            $this->logger->addAlert("{$e->getMessage()} at {$request->getUri()}");
+            $this->view->render($response, 'exception/404.twig');
         } catch(\Exception $e) {
             $this->view->render($response, 'exception/404.twig');
         }
