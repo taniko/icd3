@@ -11,3 +11,7 @@ $app->get('/nishikie/search[/]', '\Hrgruri\Icd3\Controller\SearchController:nish
 $app->get('/books/search[/]', '\Hrgruri\Icd3\Controller\SearchController:books');
 $app->post('/log/commit[/]', '\Hrgruri\Icd3\Controller\LogController:commit');
 $app->post('/ignore/commit[/]', '\Hrgruri\Icd3\Controller\IgnoreController:commit');
+
+// API
+$app->get('/api/{db}/detail', '\Hrgruri\Icd3\Controller\DetailController:api');
+$app->get('/api/{db}/search', '\Hrgruri\Icd3\Controller\SearchController:api');

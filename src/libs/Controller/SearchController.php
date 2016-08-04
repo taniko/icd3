@@ -7,6 +7,7 @@ use Illuminate\Database\Capsule\Manager as Capsule;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Hrgruri\Icd3\Session;
+use Hrgruri\Icd3\Exception\ParamException;
 use Hrgruri\Icd3\Model\{
     Nishikie,
     Book
@@ -60,5 +61,35 @@ class SearchController
             'next_link' =>  $next_link,
             'db'        =>  'book'
         ]);
+    }
+
+    public function api(Request $request, Response $response, $args)
+    {
+        try {
+            $result = ['status' => true];
+            if ($args['db'] == 'nishikie') {
+                $nishikie   = new Nishikie($this->capsule);
+                $param      = $nishikie->correctParam($request->getQueryParams());
+                $result['result'] = $nishikie->search($param);
+            } elseif ($args['db'] == 'books') {
+                $book   = new Book($this->capsule);
+                $param  = $book->correctParam($request->getQueryParams());
+                $result['result'] = $book->search($param);
+            } else {
+                throw new \ParamException();
+            }
+            $response->withJson($result);
+        } catch (\PDOException $e) {
+            $this->logger->addAlert("{$e->getMessage()} at {$request->getUri()}");
+            $response->withJson(['status' => false, 'text' => 'Database error']);
+        } catch (ParamException $e) {
+            $response->withJson(['status' => false, 'text'=> $e->getMessage()]);
+        } catch(\Exception $e) {
+            $param = $request->getQueryParams();
+            $param['db'] = $args['db'] ;
+            $this->logger->addError('api_search', $param);
+            $response->withJson(['status' => false, 'text'=> 'error']);
+        }
+        return $response;
     }
 }
