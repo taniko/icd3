@@ -23,6 +23,11 @@ $container['view'] = function ($c) {
         $c['router'],
         $c['request']->getUri()
     ));
+    $view->getEnvironment()->addFilter(
+        new \Twig_SimpleFilter('js', function (string $name){
+            return '<script type="text/javascript" src="'.$name.'"></script>';
+        })
+    );
     return $view;
 };
 

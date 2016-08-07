@@ -40,6 +40,7 @@ class NishikieController extends Controller
             $this->logger->addAlert("{$e->getMessage()} at {$request->getUri()}");
             $this->view->render($response, 'exception/404.twig');
         } catch(\Exception $e) {
+            $this->logger->addAlert("{$e->getMessage()} at {$request->getUri()}");
             $this->view->render($response, 'exception/404.twig');
         }
         return $response;

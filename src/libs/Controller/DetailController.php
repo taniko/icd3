@@ -31,7 +31,7 @@ class DetailController extends Controller
                 ->getRecommendByAsset($args['id'], $args['db'], 4);
             $this->view->render($response, 'detail.twig', [
                 'db'        =>  $args['db'],
-                'title'     =>  '浮世絵データベース',
+                'title'     =>  "{$info->title} | 浮世絵データベース",
                 'info'      => $info,
                 'recommend' => $recommend
             ]);
@@ -57,14 +57,16 @@ class DetailController extends Controller
             } else {
                 throw new \Exception();
             }
-            if (boolval($request->getQueryParam('recommend'))) {
+            if ($request->getQueryParam('recommend') === 'true') {
                 $result['recommend']  = (new recommend($this->capsule))
                     ->getRecommendByAsset($request->getQueryParam('arc_no'),
                     $args['db'],
                     $request->getQueryParam('count')
                 );
             }
-            $response->withJson($result);
+            // for DEMO
+            return print_r(json_encode($result, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+            // $response->withJson($result);
         } catch (\PDOException $e) {
             $this->logger->addAlert("{$e->getMessage()} at {$request->getUri()}");
             $response->withJson(['status' => false, 'text' => 'Database error']);

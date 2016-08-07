@@ -29,7 +29,7 @@ class SearchController
     {
         $session = new Session($this->capsule);
         $session->start();
-        $nishikie   = new Nishikie($this->capsule);
+        $nishikie   = new Nishikie($this->capsule, $this->logger);
         $param      = $nishikie->correctParam($request->getQueryParams());
         $assets     = $nishikie->search($param);
         $url = "/nishikie/search?keyword={$param['keyword']}&title{$param['title']}=&author{$param['author']}=&count={$param['count']}";
@@ -48,7 +48,7 @@ class SearchController
     {
         $session = new Session($this->capsule);
         $session->start();
-        $book   = new Book($this->capsule);
+        $book   = new Book($this->capsule, $this->logger);
         $param  = $book->correctParam($request->getQueryParams());
         $assets = $book->search($param);
         $url = "/books/search?id={$param['id']}&title{$param['title']}=&author{$param['author']}=&count={$param['count']}";

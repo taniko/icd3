@@ -12,6 +12,8 @@
         {% block require_opt %}{% endblock %}
         <link rel="stylesheet" type="text/css" href="/css/page.css">
         <link rel="stylesheet" type="text/css" href="/css/card.css">
+        <script type="text/javascript" src="/build/react.min.js"></script>
+        <script type="text/javascript" src="/build/react-dom.min.js"></script>
         <script type="text/javascript">
             function commitLog(arc_no){
                 $.ajax({
@@ -47,5 +49,6 @@
             {% block sub_block %}{% endblock %}
             {% block link_block %}{% endblock %}
         </div>
+        {% block js_block %}{% endblock %}
     </body>
 </html>

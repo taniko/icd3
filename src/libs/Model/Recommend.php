@@ -58,9 +58,9 @@ class Recommend extends Model
         $num    = $this->correctNumber($num);
         try {
             if ($db === 'nishikie') {
-                $client = new Nishikie($this->capsule);
+                $client = new Nishikie($this->capsule, $this->logger);
             } elseif ($db === 'books') {
-                $client = new Book($this->capsule);
+                $client = new Book($this->capsule, $this->logger);
             } else {
                 throw new \Exception();
             }
@@ -78,7 +78,6 @@ class Recommend extends Model
                 $user_items[] = $value->asset_id;
             }
             $user_items = array_unique($user_items);
-
             /*  候補者リストを作成   */
             $data = $this->capsule->table('arc_log')
                 ->select('arc_log.user_id', 'asset.name', 'asset.id')
@@ -141,7 +140,7 @@ class Recommend extends Model
             }
         } catch (\Exception $e) {
             //error
-            // print $e->getMessage();
+            $this->logger->addNotice($e->getMessage().' at getRecommendByUser');
         }
         return $result;
     }

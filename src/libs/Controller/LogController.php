@@ -25,6 +25,6 @@ class LogController
         $db     = $request->getParam('db');
         $asset  = $request->getParam('arc_no');
         $log = new Log($this->capsule);
-        $log->insertLog($user['id'], $db, $asset);
+        $log->insertLog($user['id'], $asset, $db);
     }
 }

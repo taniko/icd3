@@ -4,7 +4,11 @@
 <div class="title">
     タイトル :<br>
     <span style="cursor: pointer" onclick="commitLog('{{item.id}}')">
-        <a href="/{{db}}/detail/{{item.id}}">{{item.title}}</a>
+        {% if item.title|length > 0 %}
+            <a href="/{{db}}/detail/{{item.id}}">{{item.title}}</a>
+        {% else %}
+            <a href="/{{db}}/detail/{{item.id}}">{{item.id}}</a>
+        {% endif %}
     </span>
 </div>
 

@@ -6,9 +6,11 @@ use Illuminate\Database\Capsule\Manager as Capsule;
 abstract class Model
 {
     protected $capsule;
+    protected $logger;
 
-    public function __construct(Capsule $capsule)
+    public function __construct(Capsule $capsule, $logger = null)
     {
-        $this->capsule = $capsule;
+        $this->capsule  = $capsule;
+        $this->logger   = $logger;
     }
 }
